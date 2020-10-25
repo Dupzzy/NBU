@@ -1,0 +1,38 @@
+Avg speed for 3 sortings, selection sort:
+
+Avg time for 10000 elements: 0.113492
+Avg time for 20000 elements: 0.442301
+Avg time for 30000 elements: 0.983908
+Avg time for 40000 elements: 1.749979
+Avg time for 50000 elements: 2.744762
+Avg time for 60000 elements: 3.954626
+Avg time for 70000 elements: 5.426058
+Avg time for 80000 elements: 7.003401
+Avg time for 90000 elements: 8.870465
+Avg time for 100000 elements: 10.929226
+
+Avg speed for 3 sortings, bubble sort:
+
+Avg time for 10000 elements: 0.324953
+Avg time for 20000 elements: 1.341004
+Avg time for 30000 elements: 3.044188
+Avg time for 40000 elements: 5.460669
+Avg time for 50000 elements: 8.595952
+Avg time for 60000 elements: 12.380760
+Avg time for 70000 elements: 16.931963
+Avg time for 80000 elements: 22.089539
+Avg time for 90000 elements: 27.992432
+Avg time for 100000 elements: 34.639954
+
+Avg speed for 3 sortings, insertion sort:
+
+Avg time for 10000 elements: 0.161471
+Avg time for 20000 elements: 0.646907
+Avg time for 30000 elements: 1.461937
+Avg time for 40000 elements: 2.606202
+Avg time for 50000 elements: 4.093107
+Avg time for 60000 elements: 5.873341
+Avg time for 70000 elements: 7.975748
+Avg time for 80000 elements: 10.426414
+Avg time for 90000 elements: 13.289716
+Avg time for 100000 elements: 16.347010

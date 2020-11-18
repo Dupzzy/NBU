@@ -1,0 +1,1 @@
+cmd_/home/plamen/Documents/Work/Drivers/practice/my_fops.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/plamen/Documents/Work/Drivers/practice/my_fops.ko /home/plamen/Documents/Work/Drivers/practice/my_fops.o /home/plamen/Documents/Work/Drivers/practice/my_fops.mod.o;  true

@@ -1,0 +1,1 @@
+cmd_/home/plamen/Documents/Work/Drivers/tmp100/imp_tmp100.ko := arm-linux-gnueabi-ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /home/plamen/Documents/Work/Drivers/tmp100/imp_tmp100.ko /home/plamen/Documents/Work/Drivers/tmp100/imp_tmp100.o /home/plamen/Documents/Work/Drivers/tmp100/imp_tmp100.mod.o ;  true

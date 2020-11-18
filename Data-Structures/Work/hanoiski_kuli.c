@@ -1,0 +1,7 @@
+#include <stdio.h>
+
+int a[5] = { 0 }, b[5] = { 0 }, c[5] = { 0 };
+
+int main() {
+
+}

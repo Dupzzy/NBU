@@ -4,9 +4,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#define STEP 100
-#define INIT_ELEM 200
-#define MAX_ELEM 1000
+#define STEP 3000
+#define INIT_ELEM 1000
+#define MAX_ELEM 31000
 
 void selection_sort(int* arr, int size);
 void q_sort(int *arr, int li, int ri);
@@ -17,7 +17,9 @@ int main() {
 	clock_t c0, c1, c2, c3;
 	float cpuavg0 = 0., cpuavg1 = 0.;
 	srand(time(NULL));
-		
+	
+	printf("Elements, Selection_sort, Quick_sort\n");
+	
 	for(i = INIT_ELEM; i <= MAX_ELEM; i += STEP) {
 		
 		for (int k = 0; k < 3; k++) {		
@@ -40,8 +42,7 @@ int main() {
 			cpuavg1 += (float)(c3 - c2) / CLOCKS_PER_SEC;
 		}
 
-		printf("Avg time for %d elements selection_sort: %f\n", i, cpuavg0 / 3);
-		printf("Avg time for %d elements quick_sort: %f\n", i, cpuavg1 / 3);
+		printf("%d, %f, %f\n", i, cpuavg0 / 3, cpuavg1 / 3);
 	}		
 }
 

@@ -21,6 +21,7 @@ static int TMP100_i2c_remove(struct i2c_client *client);
 static int tmp100_open(struct inode *inode, struct file *file);
 static int tmp100_release(struct inode *inode, struct file *file);
 
+
 dev_t dev;
 struct class *dev_class;
 struct cdev tmp100_cdev;
@@ -46,7 +47,7 @@ static int tmp100_open(struct inode *inode, struct file *file)
 {
 	if (is_open == 1) {
 		printk(KERN_INFO "Device is in use...!!!\n");
-		return -1; /* EPERM */
+		return -EPERM; 
 	}
     	
     	is_open = 1;
@@ -58,7 +59,7 @@ static int tmp100_release(struct inode *inode, struct file *file)
 {
 	if (is_open == 0) {
 		printk(KERN_INFO "Device isn't opened..!!!\n");
-		return -1;
+		return -EPERM;
 	}
     
     	is_open = 0;
@@ -67,14 +68,11 @@ static int tmp100_release(struct inode *inode, struct file *file)
 }
 
 static ssize_t tmp100_read(struct file * filp, char *buffer, size_t length, loff_t *offset) {
-	char error; 	/* Variable used to store the error code of regmap_read if it fails.	 */
-	unsigned int r_val; 	/* Variable used to store the wread value from the regmap_read func 	*/
-	char output[BUFF_SIZE]; 
-	unsigned char bytes_read = 0;	
-			/* Here we will store the value that we will send to user space (/dev/<devicefile>) */
-			/* 1 byte for the '.' in the number, 3 bytes for the number representing the whole part and 4 bytes for the fraction part 	*/
-			/* Example -101.6250, of course there are cases where we don't use all the bytes, example 25.0625, only 8 bytes used 	*/
+	short error; 		/* Variable used to store the error code of regmap_read if it fails.	 */
+	unsigned int r_val; 	/* Variable used to store the value wread from the regmap_read func 	*/
+	char output[BUFF_SIZE]; /* Buffer storing the info to be outputted in user space */
 	
+	/* using offset to terminate reading */
 	if(*offset != 0) 
 		return 0;
 			      	
@@ -94,19 +92,17 @@ static ssize_t tmp100_read(struct file * filp, char *buffer, size_t length, loff
 				 ((((unsigned short)r_val >> 4) & 0x0f) * 10000) >> 4);
 		
 			 
-	while(output[*offset]) {
+	while(output[*offset]) 
 		put_user(output[(*offset)++], buffer++);
-		bytes_read++;
-	}
 	
 	put_user('\n', buffer++);
+	(*offfset)++;
 	
 	if(bytes_read > length) {
-		return -ENFILE; /* since we overflowed the file we return  File table overflow */
+		return -ENFILE; 
 	}
 	
-	*offset =  bytes_read;
-	return bytes_read + 1;
+	return *offset;
 }
 
 /*
@@ -157,10 +153,8 @@ static int TMP100_i2c_probe(struct i2c_client *client,
         return 0;
  
 r_device:
-	printk(KERN_INFO "Something is not alright!!\n");
         class_destroy(dev_class);
 r_class:
-	printk(KERN_INFO "Something is not alright!!\n");
         unregister_chrdev_region(dev,1);
         return -1;
 }

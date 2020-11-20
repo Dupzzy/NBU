@@ -1,8 +1,6 @@
 obj-m += imp_tmp100.o
-
+ 
 KDIR = ~/Documents/Work/linux-src/linux
-
-
 all:
 	make -C $(KDIR)  M=$(shell pwd) modules
  

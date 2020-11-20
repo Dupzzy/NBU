@@ -4,7 +4,7 @@
 &i2c2 {
 	status = "okay";
 	bus_freq = <100000>;
-	
+
 	tmp100@4f {
 		model = "Driver TMP100";
 		compatible = "Driver, TMP100";

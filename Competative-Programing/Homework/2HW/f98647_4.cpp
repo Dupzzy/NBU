@@ -64,11 +64,12 @@ int main() {
 			
 			pos++; 
 		}
+		fpos++;
 		
 		// Finding the lcm 
 		fraction = farr[0];
-		for (int i = 0; i < fpos; i++) {
-			fraction = lcm(fraction, farr[i + 1]);
+		for (int i = 1; i < fpos; i++) {
+			fraction = lcm(fraction, farr[i]);
 		}
 		
 		// Multiplying the numbers to with the correct fraction part
@@ -89,19 +90,25 @@ int main() {
 				continue;
 			}
 		}
-		
-		
-		int gcdd = gcd(whole, fraction);
-		
+		if (whole != 0) {
+		int gcdd;
+		if(whole < 0)
+			gcdd = gcd(-whole, fraction);
+		else
+			gcdd = gcd(whole, fraction);
 		if (flag1 == false) {
-			cout << endl;
 			flag1 = true;
 		}
 		
-		if(whole < fraction)
+		if(fraction / gcdd != 1)
 			cout << whole / gcdd << "/" << fraction / gcdd;
 		else 	
 			cout << whole / gcdd;
+		}
+		else 
+			cout << "0";
+			
+		cout << endl;
 	}	
 		
 }

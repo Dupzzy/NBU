@@ -1,8 +1,10 @@
-cmd_/home/plamen/Documents/Work/Drivers/hello/hello.o := arm-linux-gnueabi-gcc -Wp,-MD,/home/plamen/Documents/Work/Drivers/hello/.hello.o.d  -nostdinc -isystem /usr/lib/gcc-cross/arm-linux-gnueabi/9/include -I./arch/arm/include -I./arch/arm/include/generated  -I./include -I./arch/arm/include/uapi -I./arch/arm/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -std=gnu89 -fno-PIE -fno-dwarf2-cfi-asm -fno-ipa-sra -mabi=aapcs-linux -mfpu=vfp -funwind-tables -marm -Wa,-mno-warn-deprecated -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-int-in-bool-context -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wno-unused-but-set-variable -Wno-unused-const-variable -fomit-frame-pointer -fno-var-tracking-assignments -Wdeclaration-after-statement -Wno-pointer-sign -Wno-stringop-truncation -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -fmacro-prefix-map=./= -Wno-packed-not-aligned  -DMODULE  -DKBUILD_BASENAME='"hello"' -DKBUILD_MODNAME='"hello"' -c -o /home/plamen/Documents/Work/Drivers/hello/.tmp_hello.o /home/plamen/Documents/Work/Drivers/hello/hello.c
+cmd_/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o := arm-linux-gnueabi-gcc -Wp,-MD,/home/plamen/Documents/NBU/Drivers/.tmp100-25-11.mod.o.d  -nostdinc -isystem /usr/lib/gcc-cross/arm-linux-gnueabi/9/include -I./arch/arm/include -I./arch/arm/include/generated  -I./include -I./arch/arm/include/uapi -I./arch/arm/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -std=gnu89 -fno-PIE -fno-dwarf2-cfi-asm -fno-ipa-sra -mabi=aapcs-linux -mfpu=vfp -funwind-tables -marm -Wa,-mno-warn-deprecated -D__LINUX_ARM_ARCH__=7 -march=armv7-a -msoft-float -Uarm -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-int-in-bool-context -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wno-unused-but-set-variable -Wno-unused-const-variable -fomit-frame-pointer -fno-var-tracking-assignments -Wdeclaration-after-statement -Wno-pointer-sign -Wno-stringop-truncation -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -fmacro-prefix-map=./= -Wno-packed-not-aligned  -DKBUILD_BASENAME='"tmp100_25_11.mod"' -DKBUILD_MODNAME='"tmp100_25_11"' -DMODULE  -c -o /home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o /home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.c
 
-source_/home/plamen/Documents/Work/Drivers/hello/hello.o := /home/plamen/Documents/Work/Drivers/hello/hello.c
+source_/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o := /home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.c
 
-deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
+deps_/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o := \
+    $(wildcard include/config/module/unload.h) \
+    $(wildcard include/config/retpoline.h) \
   include/linux/kconfig.h \
     $(wildcard include/config/cpu/big/endian.h) \
     $(wildcard include/config/booger.h) \
@@ -13,19 +15,33 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/arch/supports/optimized/inlining.h) \
     $(wildcard include/config/optimize/inlining.h) \
   include/linux/compiler-gcc.h \
-    $(wildcard include/config/retpoline.h) \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
-  include/linux/init.h \
-    $(wildcard include/config/have/arch/prel32/relocations.h) \
-    $(wildcard include/config/strict/kernel/rwx.h) \
-    $(wildcard include/config/strict/module/rwx.h) \
-  include/linux/compiler.h \
-    $(wildcard include/config/trace/branch/profiling.h) \
-    $(wildcard include/config/profile/all/branches.h) \
-    $(wildcard include/config/stack/validation.h) \
-    $(wildcard include/config/kasan.h) \
-  include/linux/compiler_types.h \
-  include/uapi/linux/types.h \
+  include/linux/build-salt.h \
+    $(wildcard include/config/build/salt.h) \
+  include/linux/elfnote.h \
+  include/linux/elf.h \
+  arch/arm/include/asm/elf.h \
+    $(wildcard include/config/mmu.h) \
+    $(wildcard include/config/vdso.h) \
+  arch/arm/include/asm/auxvec.h \
+  arch/arm/include/uapi/asm/auxvec.h \
+  arch/arm/include/asm/hwcap.h \
+  arch/arm/include/uapi/asm/hwcap.h \
+  arch/arm/include/asm/vdso_datapage.h \
+  arch/arm/include/asm/page.h \
+    $(wildcard include/config/cpu/copy/v4wt.h) \
+    $(wildcard include/config/cpu/copy/v4wb.h) \
+    $(wildcard include/config/cpu/copy/feroceon.h) \
+    $(wildcard include/config/cpu/copy/fa.h) \
+    $(wildcard include/config/cpu/sa1100.h) \
+    $(wildcard include/config/cpu/xscale.h) \
+    $(wildcard include/config/cpu/xsc3.h) \
+    $(wildcard include/config/cpu/copy/v6.h) \
+    $(wildcard include/config/kuser/helpers.h) \
+    $(wildcard include/config/arm/lpae.h) \
+    $(wildcard include/config/have/arch/pfn/valid.h) \
+  arch/arm/include/asm/glue.h \
+  arch/arm/include/asm/pgtable-2level-types.h \
   arch/arm/include/uapi/asm/types.h \
   include/asm-generic/int-ll64.h \
   include/uapi/asm-generic/int-ll64.h \
@@ -33,6 +49,27 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
   include/asm-generic/bitsperlong.h \
     $(wildcard include/config/64bit.h) \
   include/uapi/asm-generic/bitsperlong.h \
+  arch/arm/include/asm/memory.h \
+    $(wildcard include/config/need/mach/memory/h.h) \
+    $(wildcard include/config/page/offset.h) \
+    $(wildcard include/config/thumb2/kernel.h) \
+    $(wildcard include/config/highmem.h) \
+    $(wildcard include/config/smp.h) \
+    $(wildcard include/config/dram/base.h) \
+    $(wildcard include/config/dram/size.h) \
+    $(wildcard include/config/xip/kernel.h) \
+    $(wildcard include/config/have/tcm.h) \
+    $(wildcard include/config/arm/patch/phys/virt.h) \
+    $(wildcard include/config/phys/offset.h) \
+    $(wildcard include/config/xip/phys/addr.h) \
+    $(wildcard include/config/debug/virtual.h) \
+  include/linux/compiler.h \
+    $(wildcard include/config/trace/branch/profiling.h) \
+    $(wildcard include/config/profile/all/branches.h) \
+    $(wildcard include/config/stack/validation.h) \
+    $(wildcard include/config/kasan.h) \
+  include/linux/compiler_types.h \
+  include/uapi/linux/types.h \
   include/uapi/linux/posix_types.h \
   include/linux/stddef.h \
   include/uapi/linux/stddef.h \
@@ -40,64 +77,36 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
   include/uapi/asm-generic/posix_types.h \
   arch/arm/include/asm/barrier.h \
     $(wildcard include/config/cpu/32v6k.h) \
-    $(wildcard include/config/thumb2/kernel.h) \
-    $(wildcard include/config/cpu/xsc3.h) \
     $(wildcard include/config/cpu/fa526.h) \
     $(wildcard include/config/arm/heavy/mb.h) \
     $(wildcard include/config/arm/dma/mem/bufferable.h) \
-    $(wildcard include/config/smp.h) \
     $(wildcard include/config/cpu/spectre.h) \
   include/asm-generic/barrier.h \
   include/linux/kasan-checks.h \
+  include/linux/const.h \
+  include/uapi/linux/const.h \
   include/linux/types.h \
     $(wildcard include/config/have/uid16.h) \
     $(wildcard include/config/uid16.h) \
     $(wildcard include/config/lbdaf.h) \
     $(wildcard include/config/arch/dma/addr/t/64bit.h) \
     $(wildcard include/config/phys/addr/t/64bit.h) \
-  include/linux/module.h \
-    $(wildcard include/config/modules.h) \
-    $(wildcard include/config/sysfs.h) \
-    $(wildcard include/config/modules/tree/lookup.h) \
-    $(wildcard include/config/livepatch.h) \
-    $(wildcard include/config/unused/symbols.h) \
-    $(wildcard include/config/module/sig.h) \
-    $(wildcard include/config/generic/bug.h) \
-    $(wildcard include/config/kallsyms.h) \
-    $(wildcard include/config/tracepoints.h) \
-    $(wildcard include/config/jump/label.h) \
-    $(wildcard include/config/tracing.h) \
-    $(wildcard include/config/event/tracing.h) \
-    $(wildcard include/config/ftrace/mcount/record.h) \
-    $(wildcard include/config/module/unload.h) \
-    $(wildcard include/config/constructors.h) \
-    $(wildcard include/config/function/error/injection.h) \
-  include/linux/list.h \
-    $(wildcard include/config/debug/list.h) \
-  include/linux/poison.h \
-    $(wildcard include/config/illegal/pointer/value.h) \
-    $(wildcard include/config/page/poisoning/zero.h) \
-  include/linux/const.h \
-  include/uapi/linux/const.h \
-  include/linux/kernel.h \
-    $(wildcard include/config/preempt/voluntary.h) \
-    $(wildcard include/config/debug/atomic/sleep.h) \
-    $(wildcard include/config/mmu.h) \
-    $(wildcard include/config/prove/locking.h) \
-    $(wildcard include/config/arch/has/refcount.h) \
-    $(wildcard include/config/panic/timeout.h) \
-  /usr/lib/gcc-cross/arm-linux-gnueabi/9/include/stdarg.h \
-  include/linux/linkage.h \
-  include/linux/stringify.h \
-  include/linux/export.h \
-    $(wildcard include/config/modversions.h) \
-    $(wildcard include/config/module/rel/crcs.h) \
-    $(wildcard include/config/trim/unused/ksyms.h) \
-  arch/arm/include/asm/linkage.h \
+  include/linux/sizes.h \
+  include/asm-generic/memory_model.h \
+    $(wildcard include/config/flatmem.h) \
+    $(wildcard include/config/discontigmem.h) \
+    $(wildcard include/config/sparsemem/vmemmap.h) \
+    $(wildcard include/config/sparsemem.h) \
+  include/linux/pfn.h \
+  include/asm-generic/getorder.h \
+  include/linux/log2.h \
+    $(wildcard include/config/arch/has/ilog2/u32.h) \
+    $(wildcard include/config/arch/has/ilog2/u64.h) \
   include/linux/bitops.h \
   include/linux/bits.h \
   arch/arm/include/asm/bitops.h \
   include/linux/irqflags.h \
+    $(wildcard include/config/prove/locking.h) \
     $(wildcard include/config/trace/irqflags.h) \
     $(wildcard include/config/irqsoff/tracer.h) \
     $(wildcard include/config/preempt/tracer.h) \
@@ -109,8 +118,6 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/arm/thumb.h) \
   arch/arm/include/uapi/asm/ptrace.h \
     $(wildcard include/config/cpu/endian/be8.h) \
-  arch/arm/include/asm/hwcap.h \
-  arch/arm/include/uapi/asm/hwcap.h \
   include/asm-generic/irqflags.h \
   include/asm-generic/bitops/non-atomic.h \
   include/asm-generic/bitops/builtin-__fls.h \
@@ -127,7 +134,6 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
   include/linux/atomic.h \
     $(wildcard include/config/generic/atomic64.h) \
   arch/arm/include/asm/atomic.h \
-    $(wildcard include/config/arm/lpae.h) \
   include/linux/prefetch.h \
   arch/arm/include/asm/processor.h \
     $(wildcard include/config/have/hw/breakpoint.h) \
@@ -139,7 +145,6 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/arm/l1/cache/shift.h) \
     $(wildcard include/config/aeabi.h) \
   arch/arm/include/asm/cmpxchg.h \
-    $(wildcard include/config/cpu/sa1100.h) \
     $(wildcard include/config/cpu/sa110.h) \
     $(wildcard include/config/cpu/v6.h) \
   include/asm-generic/cmpxchg-local.h \
@@ -156,9 +161,45 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
   arch/arm/include/uapi/asm/swab.h \
   include/linux/byteorder/generic.h \
   include/asm-generic/bitops/ext2-atomic-setbit.h \
-  include/linux/log2.h \
-    $(wildcard include/config/arch/has/ilog2/u32.h) \
-    $(wildcard include/config/arch/has/ilog2/u64.h) \
+  arch/arm/include/asm/user.h \
+  include/uapi/linux/elf.h \
+  include/uapi/linux/elf-em.h \
+  include/linux/module.h \
+    $(wildcard include/config/modules.h) \
+    $(wildcard include/config/sysfs.h) \
+    $(wildcard include/config/modules/tree/lookup.h) \
+    $(wildcard include/config/livepatch.h) \
+    $(wildcard include/config/unused/symbols.h) \
+    $(wildcard include/config/module/sig.h) \
+    $(wildcard include/config/generic/bug.h) \
+    $(wildcard include/config/kallsyms.h) \
+    $(wildcard include/config/tracepoints.h) \
+    $(wildcard include/config/jump/label.h) \
+    $(wildcard include/config/tracing.h) \
+    $(wildcard include/config/event/tracing.h) \
+    $(wildcard include/config/ftrace/mcount/record.h) \
+    $(wildcard include/config/constructors.h) \
+    $(wildcard include/config/function/error/injection.h) \
+    $(wildcard include/config/strict/module/rwx.h) \
+  include/linux/list.h \
+    $(wildcard include/config/debug/list.h) \
+  include/linux/poison.h \
+    $(wildcard include/config/illegal/pointer/value.h) \
+    $(wildcard include/config/page/poisoning/zero.h) \
+  include/linux/kernel.h \
+    $(wildcard include/config/preempt/voluntary.h) \
+    $(wildcard include/config/debug/atomic/sleep.h) \
+    $(wildcard include/config/arch/has/refcount.h) \
+    $(wildcard include/config/panic/timeout.h) \
+  /usr/lib/gcc-cross/arm-linux-gnueabi/9/include/stdarg.h \
+  include/linux/linkage.h \
+  include/linux/stringify.h \
+  include/linux/export.h \
+    $(wildcard include/config/modversions.h) \
+    $(wildcard include/config/module/rel/crcs.h) \
+    $(wildcard include/config/have/arch/prel32/relocations.h) \
+    $(wildcard include/config/trim/unused/ksyms.h) \
+  arch/arm/include/asm/linkage.h \
   include/linux/printk.h \
     $(wildcard include/config/message/loglevel/default.h) \
     $(wildcard include/config/console/loglevel/default.h) \
@@ -167,6 +208,8 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/printk/nmi.h) \
     $(wildcard include/config/printk.h) \
     $(wildcard include/config/dynamic/debug.h) \
+  include/linux/init.h \
+    $(wildcard include/config/strict/kernel/rwx.h) \
   include/linux/kern_levels.h \
   include/linux/cache.h \
     $(wildcard include/config/arch/has/cache/line/size.h) \
@@ -218,37 +261,6 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
   arch/arm/include/asm/fpstate.h \
     $(wildcard include/config/vfpv3.h) \
     $(wildcard include/config/iwmmxt.h) \
-  arch/arm/include/asm/page.h \
-    $(wildcard include/config/cpu/copy/v4wt.h) \
-    $(wildcard include/config/cpu/copy/v4wb.h) \
-    $(wildcard include/config/cpu/copy/feroceon.h) \
-    $(wildcard include/config/cpu/copy/fa.h) \
-    $(wildcard include/config/cpu/xscale.h) \
-    $(wildcard include/config/cpu/copy/v6.h) \
-    $(wildcard include/config/kuser/helpers.h) \
-    $(wildcard include/config/have/arch/pfn/valid.h) \
-  arch/arm/include/asm/glue.h \
-  arch/arm/include/asm/pgtable-2level-types.h \
-  arch/arm/include/asm/memory.h \
-    $(wildcard include/config/need/mach/memory/h.h) \
-    $(wildcard include/config/page/offset.h) \
-    $(wildcard include/config/highmem.h) \
-    $(wildcard include/config/dram/base.h) \
-    $(wildcard include/config/dram/size.h) \
-    $(wildcard include/config/xip/kernel.h) \
-    $(wildcard include/config/have/tcm.h) \
-    $(wildcard include/config/arm/patch/phys/virt.h) \
-    $(wildcard include/config/phys/offset.h) \
-    $(wildcard include/config/xip/phys/addr.h) \
-    $(wildcard include/config/debug/virtual.h) \
-  include/linux/sizes.h \
-  include/asm-generic/memory_model.h \
-    $(wildcard include/config/flatmem.h) \
-    $(wildcard include/config/discontigmem.h) \
-    $(wildcard include/config/sparsemem/vmemmap.h) \
-    $(wildcard include/config/sparsemem.h) \
-  include/linux/pfn.h \
-  include/asm-generic/getorder.h \
   include/linux/bottom_half.h \
   include/linux/spinlock_types.h \
   arch/arm/include/asm/spinlock_types.h \
@@ -447,15 +459,6 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/sysctl.h) \
   include/linux/rbtree.h \
   include/uapi/linux/sysctl.h \
-  include/linux/elf.h \
-  arch/arm/include/asm/elf.h \
-    $(wildcard include/config/vdso.h) \
-  arch/arm/include/asm/auxvec.h \
-  arch/arm/include/uapi/asm/auxvec.h \
-  arch/arm/include/asm/vdso_datapage.h \
-  arch/arm/include/asm/user.h \
-  include/uapi/linux/elf.h \
-  include/uapi/linux/elf-em.h \
   include/linux/kobject.h \
     $(wildcard include/config/uevent/helper.h) \
     $(wildcard include/config/debug/kobject/release.h) \
@@ -486,7 +489,9 @@ deps_/home/plamen/Documents/Work/Drivers/hello/hello.o := \
     $(wildcard include/config/have/mod/arch/specific.h) \
     $(wildcard include/config/modules/use/elf/rel.h) \
     $(wildcard include/config/modules/use/elf/rela.h) \
+  include/linux/vermagic.h \
+  include/generated/utsrelease.h \
 
-/home/plamen/Documents/Work/Drivers/hello/hello.o: $(deps_/home/plamen/Documents/Work/Drivers/hello/hello.o)
+/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o: $(deps_/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o)
 
-$(deps_/home/plamen/Documents/Work/Drivers/hello/hello.o):
+$(deps_/home/plamen/Documents/NBU/Drivers/tmp100-25-11.mod.o):

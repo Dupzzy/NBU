@@ -36,12 +36,12 @@ static int TMP100_i2c_remove(struct i2c_client *client);
 static int tmp100_open(struct inode *inode, struct file *file);
 static int tmp100_release(struct inode *inode, struct file *file);
 
-static struct tmp100 {
-	dev_t dev;
-	struct class *dev_class;
-	struct cdev tmp100_cdev;
-	struct regmap *regmap;
-	struct mutex mutex;
+struct tmp100 {
+	dev_t dev;	// Used to store the major and minor number
+	struct class *dev_class; // Class that this device should be registered to
+	struct cdev tmp100_cdev;  // Kernel’s internal structure that represents char devices
+	struct regmap *regmap; // Structure initialized with client (device specific data) and regmap_config
+	struct mutex mutex; // Mutex used to controll hardware access
 } tmp100;
 
 static const struct file_operations fops = {
@@ -85,27 +85,22 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 	// The integer part is just 8 bits and it doesn't change to be any bigger
 	uint8_t integer_part = 0;
 
-	mutex_lock(&tmp100.mutex);
-
 	// To mark the end of reading we compare offset to 0, which means if bigger than 0 we are done reading
-	if (*offset != 0) {
-		mutex_unlock(&tmp100.mutex);
+	if (*offset != 0)
 		return 0;
-	}
 
-	error = regmap_read(tmp100.regmap, TMP100_REG_00, &ur_val)
-	if (error < 0) {
-		mutex_unlock(&tmp100.mutex);
+	mutex_lock(&tmp100.mutex);
+	error = regmap_read(tmp100.regmap, TMP100_REG_00, &ur_val);
+	mutex_unlock(&tmp100.mutex);
+
+	if (error < 0) 
 		return error;
-	}
 
 	r_val = ur_val;
 
 	if (r_val < 0 && length) {
-		if (put_user('-', buffer_user++) != 0) {
-			mutex_unlock(&tmp100.mutex);
+		if (put_user('-', buffer_user++) != 0)
 			return -EFAULT;
-		}
 		(*offset)++;
 		r_val = -r_val;
 		length--;
@@ -135,26 +130,20 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 	snprintf(output, BUFF_SIZE, "%d.%04d", integer_part, fraction);
 
 	while (output[*offset] && length) {
-		if (put_user(output[(*offset)++], buffer_user++) != 0) { // put_user returns 0 on success and -EFAULT on erorr
-			mutex_unlock(&tmp100.mutex);
+		if (put_user(output[(*offset)++], buffer_user++) != 0) // put_user returns 0 on success and -EFAULT on erorr
 			return -EFAULT;
-		}
 		length--;
 	}
 
+	// Partial reads are not supported
 	if (length) {
-		if (put_user('\n', buffer_user++) != 0) {
-			mutex_unlock(&tmp100.mutex);
+		if (put_user('\n', buffer_user++) != 0) 
 			return -EFAULT;
-		}
 		(*offset)++;
 		length--;
-	} else {
-		mutex_unlock(&tmp100.mutex);
-		return -ENFILE;
-	}
+	} else
+		return -ENOBUFS; // No buffer space available
 
-	mutex_unlock(&tmp100.mutex);
 	return *offset;
 }
 

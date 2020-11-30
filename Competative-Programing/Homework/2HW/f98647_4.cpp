@@ -31,50 +31,58 @@ int main() {
 		int farr[1000] = { 0 }; int fpos = 0;
 		char carr[1000]; int cpos = 0;
 		int flag = false;
-	
+		int arrpos = 0;
+		if (line[pos] == '-') {
+			warr[0] = 0;
+			farr[0] = 1;
+		}
 	
 		// Reading all the plus, minus, fractional and whole parts of the string
 		while(line[pos]) {
 			if(line[pos]  == '+' || line[pos]  == '-') {
 				carr[cpos++] = line[pos]; 
 				flag = false;
-				fpos++;
+				arrpos++;
 				pos++;
 				continue;
 			}
 			
 			if(line[pos]  == '/') {
 				flag = true;
-				wpos++;
 				pos++;
 				continue;
 			}
 			
 			if((line[pos]  >= '0' && line[pos]  <= '9') && flag == true) {
-				farr[fpos] = (farr[fpos] * 10) + (line[pos] - '0');
+				farr[arrpos] = (farr[arrpos] * 10) + (line[pos] - '0');
 				pos++;
 				continue;
 			}
 			
 			if((line[pos]  >= '0' && line[pos]  <= '9') && flag == false) {
-				warr[wpos] = warr[wpos] * 10 + (line[pos]  - '0');
+				warr[arrpos] = warr[arrpos] * 10 + (line[pos]  - '0');
 				pos++;
 				continue;
 			}
 			
 			pos++; 
 		}
-		fpos++;
+		arrpos++;
 		
+		for (int i = 0; i < arrpos; i++) {
+			if (farr[i] == 0)
+				farr[i] = 1;
+		}
 		// Finding the lcm 
 		fraction = farr[0];
-		for (int i = 1; i < fpos; i++) {
-			fraction = lcm(fraction, farr[i]);
+		
+		for (int i = 1; i < arrpos; i++) {
+				fraction = lcm(fraction, farr[i]);	
 		}
 		
 		// Multiplying the numbers to with the correct fraction part
-		for (int i = 0; i < wpos; i++) {
-			warr[i] = warr[i] * (fraction / farr[i]);
+		for (int i = 0; i < arrpos; i++) {
+				warr[i] = warr[i] * (fraction / farr[i]);
 		}
 		
 		// adding and substracting whole parts

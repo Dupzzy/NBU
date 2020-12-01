@@ -93,7 +93,7 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 	error = regmap_read(tmp100.regmap, TMP100_REG_00, &ur_val);
 	mutex_unlock(&tmp100.mutex);
 
-	if (error < 0) 
+	if (error < 0)
 		return error;
 
 	r_val = ur_val;
@@ -137,7 +137,7 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 
 	// Partial reads are not supported
 	if (length) {
-		if (put_user('\n', buffer_user++) != 0) 
+		if (put_user('\n', buffer_user++) != 0)
 			return -EFAULT;
 		(*offset)++;
 		length--;

@@ -22,6 +22,9 @@
 #include <linux/regmap.h>
 #include <linux/types.h>
 #include <linux/mutex.h>
+#include <linux/delay.h>
+#include <linux/string.h>
+#include <linux/slab.h>
 
 // Buffer size 9 is because I'm expecting 3 bytes for the integer part of the number, 1 byte
 // for the floating point, 4 bytes for the fraction part and 1 byte for terminating 0
@@ -29,6 +32,7 @@
 #define		BUFF_SIZE		9
 #define		TMP100_REG_00		0x00
 #define		TMP100_REG_MAX		0x01
+#define		DRIVER_NAME		"tmp100"
 
 static ssize_t tmp100_read(struct file *, char *, size_t, loff_t *);
 static int TMP100_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id);
@@ -37,12 +41,16 @@ static int tmp100_open(struct inode *inode, struct file *file);
 static int tmp100_release(struct inode *inode, struct file *file);
 
 struct tmp100 {
-	dev_t dev;	// Used to store the major and minor number
-	struct class *dev_class; // Class that this device should be registered to
-	struct cdev tmp100_cdev;  // Kernel’s internal structure that represents char devices
-	struct regmap *regmap; // Structure initialized with client (device specific data) and regmap_config
-	struct mutex mutex; // Mutex used to controll hardware access
-} tmp100;
+	// dev_name is gonna store the name of the specific device		
+	// The size of dev_name is 11 as it follows => TMP100_<minor number of corresponding instance> 
+	// which is 10 bytes at max + 1 for the '\0'
+	char dev_name[30]; 	
+	dev_t dev;		// Used to store the major and minor number
+	struct class *dev_class; 	// Class that this device should be registered to
+	struct cdev tmp100_cdev;  	// Kernel’s internal structure that represents char devices
+	struct regmap *regmap; 	// Structure initialized with client (device specific data) and regmap_config
+	struct mutex mutex; 		// Mutex used to controll hardware access
+};
 
 static const struct file_operations fops = {
 	.owner = THIS_MODULE,
@@ -59,7 +67,18 @@ static const struct regmap_config tmp100_regmap_config = {
 
 static int tmp100_open(struct inode *inode, struct file *file)
 {
+	struct tmp100 *tmp100;
+	
+	// Getting the adress of the structure we are creating in the probe func
+	tmp100 = container_of(inode->i_cdev, struct tmp100, tmp100_cdev); 
+	if (tmp100 == NULL) {
+		pr_debug("Container_of error...\n");
+		return -ENODEV;
+	}
+	
+	file->private_data = tmp100;
 	pr_debug("Device File Opened...!!!\n");
+	
 	return 0;
 }
 
@@ -69,8 +88,9 @@ static int tmp100_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t length, loff_t *offset)
+static ssize_t tmp100_read(struct file *file, char __user *buffer_user, size_t length, loff_t *offset)
 {
+	struct tmp100 *tmp100 = file->private_data;
 	// Variable used to store the error code of regmap_read if it fails.
 	int error;
 	// Variable used to store the wread value from the regmap_read func
@@ -83,15 +103,15 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 	//I need to store it in "enough big" integer
 	uint16_t fraction = 0;
 	// The integer part is just 8 bits and it doesn't change to be any bigger
-	uint8_t integer_part = 0;
+	static uint8_t integer_part = 0;
 
 	// To mark the end of reading we compare offset to 0, which means if bigger than 0 we are done reading
 	if (*offset != 0)
 		return 0;
 
-	mutex_lock(&tmp100.mutex);
-	error = regmap_read(tmp100.regmap, TMP100_REG_00, &ur_val);
-	mutex_unlock(&tmp100.mutex);
+	mutex_lock(&tmp100->mutex);
+	error = regmap_read(tmp100->regmap, TMP100_REG_00, &ur_val);
+	mutex_unlock(&tmp100->mutex);
 
 	if (error < 0)
 		return error;
@@ -116,7 +136,7 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 	// The number stored in r_val has 12 effective bits which are stored in the 12 MSB bits in r_val
 	// From these 12 bites, the 8 MSB of them are used for integer part of the temperature
 	integer_part =  (uint16_t)r_val >> 8;
-
+	
 	// And the 4 LSB of these 12 bits are used for the fraction part,
 	// which means we can have 16 different fraction parts (0 - 15)
 	fraction = (r_val >> 4) & 0x0f; // This way we are getting the 4 bits needed for the fraction part
@@ -151,13 +171,18 @@ static ssize_t tmp100_read(struct file *filp, char __user *buffer_user, size_t l
 static int TMP100_i2c_probe(struct i2c_client *client,
 				const struct i2c_device_id *id)
 {
-	tmp100.dev = 0;
-	tmp100.regmap = devm_regmap_init_i2c(client, &tmp100_regmap_config);
+	struct tmp100 *tmp100;
+	
+	// Allocating memory for tmp100
+	tmp100 = kzalloc(sizeof(struct tmp100), GFP_KERNEL);
 
-	mutex_init(&tmp100.mutex);
+	tmp100->dev = 0;
+	tmp100->regmap = devm_regmap_init_i2c(client, &tmp100_regmap_config);
 
-	if (IS_ERR(tmp100.regmap))
-		return PTR_ERR(tmp100.regmap);
+	mutex_init(&tmp100->mutex);
+
+	if (IS_ERR(tmp100->regmap))
+		return PTR_ERR(tmp100->regmap);
 
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		pr_err("I2C_FUNC_I2C not supported\n");
@@ -165,29 +190,34 @@ static int TMP100_i2c_probe(struct i2c_client *client,
 	}
 
 	/*Allocating Major number*/
-	if ((alloc_chrdev_region(&tmp100.dev, 0, 1, "tmp100")) < 0) {
+	if ((alloc_chrdev_region(&tmp100->dev, 0, 1, DRIVER_NAME)) < 0) {
 		pr_debug("Cannot allocate major number\n");
 		return -1;
 	}
 
 	/*Creating cdev structure*/
-	cdev_init(&tmp100.tmp100_cdev, &fops);
+	cdev_init(&tmp100->tmp100_cdev, &fops);
 
 	/*Adding character device to the system*/
-	if ((cdev_add(&tmp100.tmp100_cdev, tmp100.dev, 1)) < 0) {
+	if ((cdev_add(&tmp100->tmp100_cdev, tmp100->dev, 1)) < 0) {
 		pr_debug("Cannot add the device to the system\n");
 		goto error_1;
 	}
 
 	/*Creating struct class*/
-	tmp100.dev_class = class_create(THIS_MODULE, "tmp100");
-	if (tmp100.dev_class == NULL) {
+	tmp100->dev_class = class_create(THIS_MODULE, DRIVER_NAME);
+	if (tmp100->dev_class == NULL) {
 		pr_debug("Cannot create the struct class\n");
 		goto error_1;
 	}
 
+	// Assigning unique name for this driver instance
+	snprintf(tmp100->dev_name, sizeof(tmp100->dev_name),
+		"%s_%d", id->name, MINOR(tmp100->dev));
+	// I don't understand why id->name writes "\(null\)" and my device file name is : "\(null\)_<minor number>"
+	
 	/*Creating device*/
-	if ((device_create(tmp100.dev_class, NULL, tmp100.dev, NULL, "tmp100")) == NULL) {
+	if ((device_create(tmp100->dev_class, NULL, tmp100->dev, NULL, tmp100->dev_name)) == NULL) {
 		pr_debug("Cannot create the Device 1\n");
 		goto error_2;
 	}
@@ -196,18 +226,25 @@ static int TMP100_i2c_probe(struct i2c_client *client,
 	return 0;
 
 error_2:
-	class_destroy(tmp100.dev_class);
+	class_destroy(tmp100->dev_class);
 error_1:
-	unregister_chrdev_region(tmp100.dev, 1);
+	/* TODO */
+	// Destroy mutex
+	unregister_chrdev_region(tmp100->dev, 1);
 	return -1;
 }
 
 /* Module exit func */
 static int TMP100_i2c_remove(struct i2c_client *client)
 {
-	device_destroy(tmp100.dev_class, tmp100.dev);
-	class_destroy(tmp100.dev_class);
-	unregister_chrdev_region(tmp100.dev, 1);
+	/* TODO */
+	// Since tmp100 is not global anymore I need to use the i2c_client struct 
+	// in order to "remove" the module
+	//struct tmp100 *tmp100 = file->private_data;
+	//device_destroy(tmp100->dev_class, tmp100.dev);
+	//class_destroy(tmp100->dev_class);
+	//unregister_chrdev_region(tmp100->dev, 1);
+	// FREE MEMORY
 	pr_debug("Kernel Module Removed Successfully...\n");
 
 	return 0;

@@ -244,7 +244,7 @@ static int TMP100_i2c_remove(struct i2c_client *client)
 
 	// Since tmp100 is not global anymore I need to use the i2c_client struct
 	// in order to "remove" the module
-	device_destroy(tmp100->dev_class, tmp100.dev);
+	device_destroy(tmp100->dev_class, tmp100->dev);
 	class_destroy(tmp100->dev_class);
 	unregister_chrdev_region(tmp100->dev, 1);
 	kfree(tmp100);

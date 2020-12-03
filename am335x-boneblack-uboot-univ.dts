@@ -1,0 +1,30 @@
+/dts-v1/;
+#include "am335x-boneblack-uboot-univ-old.dts"
+
+&i2c2 {
+	status = "okay";
+	bus_freq = <100000>;
+	
+	tmp100@4f {
+		model = "Driver TMP100";
+		compatible = "Driver, TMP100";
+		reg = <0x4f>;
+	};
+	
+#if 0
+	This address is random number which I selected just for the example
+	but according to the datasheet it can vary from 0x48 - 0x4f depending
+	on which one we select. We can select different address buy connecting
+	the ADD1 and ADD0 pins to 1, 0 or leaving it float (unconnected) depending
+	on how we want our sensor to be addressed.
+#endif
+
+	tmp100@49 {
+		model = "Driver TMP100_2";
+		compatible = "Driver, TMP100_2";
+		reg = <0x49>;
+	};
+};
+
+
+
